@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="GiftJoy">
+  <link rel="shortcut icon" href="favicon.png">
+
+  <meta name="description" content="Your Gift Cart - Review and manage your selected gifts before checkout" />
+  <meta name="keywords" content="gifts, presents, shopping cart, checkout" />
+
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="css/tiny-slider.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <title>GiftJoy</title>
+  
+  <style>
+    /* Custom Cart Styles */
+    .cart-page {
+      background-color: #f9f5f0;
+      min-height: 100vh;
+      padding-bottom: 5rem;
+    }
+    
+    .cart-header {
+      background-color: #a92138;
+      color: white;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+    
+    .cart-header h1 {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .cart-header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+    
+    .cart-item {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .cart-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    
+    .cart-item-img {
+      height: 300px;
+      object-fit: cover;
+      width: 100%;
+    }
+    
+    .cart-item-details {
+      padding: 1.5rem;
+    }
+    
+    .cart-item-title {
+      font-weight: 600;
+      color: #2a2a2a;
+      margin-bottom: 0.5rem;
+    }
+    
+    .cart-item-desc {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .cart-item-price {
+      font-weight: 700;
+      color: #a92138;
+      font-size: 1.1rem;
+    }
+    
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+    }
+    
+    .quantity-btn {
+      width: 36px;
+      height: 36px;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .quantity-input {
+      width: 50px;
+      text-align: center;
+      border: 1px solid #ddd;
+      height: 36px;
+      margin: 0 5px;
+    }
+    
+    .remove-item {
+      color: #dc3545;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .remove-item:hover {
+      color: #a92138;
+      transform: scale(1.1);
+    }
+    
+    .cart-summary {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 2rem;
+      position: sticky;
+      top: 1rem;
+    }
+    
+    .summary-title {
+      font-weight: 600;
+      color: #2a2a2a;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    
+    .summary-total {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #a92138;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .checkout-btn {
+      background: #a92138;
+      color: white;
+      border: none;
+      padding: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      width: 100%;
+      margin-top: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .checkout-btn:hover {
+      background: #8a1c2f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(169, 33, 56, 0.2);
+    }
+    
+    .continue-shopping {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: #666;
+    }
+    
+    .coupon-input {
+      display: flex;
+      margin: 1.5rem 0;
+    }
+    
+    .coupon-input input {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 8px 0 0 8px;
+      padding: 0.75rem 1rem;
+    }
+    
+    .coupon-input button {
+      background: #2a2a2a;
+      color: white;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      padding: 0 1.5rem;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 5rem 0;
+    }
+    
+    .empty-cart-icon {
+      font-size: 4rem;
+      color: #a92138;
+      margin-bottom: 1.5rem;
+    }
+    
+    .empty-cart h3 {
+      margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 767.98px) {
+      .cart-item {
+        flex-direction: column;
+      }
+      
+      .cart-item-img {
+        height: auto;
+        max-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body >
+  <div class="cart-page">
+    <!-- Start Header/Navigation -->
+    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="GiftJoy navigation bar">
+      <div class="container">
+				<a class="navbar-brand" href="index.html">
+				  <img src="images/hero1.png" alt="GiftJoy Logo" class="navbar-logo me-2">
+				  
+				</a>
+				<span class="brand-name">GiftJoy</span>
+			  
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsGiftJoy" aria-controls="navbarsGiftJoy" aria-expanded="false" aria-label="Toggle navigation">
+				  <span class="navbar-toggler-icon"></span>
+				</button>
+			  
+				<div class="collapse navbar-collapse" id="navbarsGiftJoy">
+				  <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+					<li>
+					  <a class="nav-link" href="index.html">Home</a>
+					</li>
+					<li><a class="nav-link" href="shop.html">Shop</a></li>
+					<li><a class="nav-link" href="occasions.html">Occasions</a></li>
+					<li><a class="nav-link" href="gift-ideas.html">Gift Ideas</a></li>
+					<li><a class="nav-link" href="about.html">About us</a></li>
+					<li><a class="nav-link" href="contact.html">Contact us</a></li>
+				  </ul>
+			  
+				  <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+					<li><a class="nav-link" href="login.html"><img src="images/user.svg" alt="Account"></a></li>
+					<li class="nav-item active"><a class="nav-link" href="cart.html"><img src="images/cart.svg" alt="Cart"></a></li>
+				  </ul>
+				</div>
+			</div>
+    </nav>
+    <!-- End Header/Navigation -->
+
+    <!-- Cart Header -->
+    <div class="cart-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h1>Your Gift Cart</h1>
+            <p>Review your selected gifts before checkout</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Cart Items -->
+          <div id="cart-items-container">
+            <div class="cart-item">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="images/personalized-necklace.jpg" alt="Personalized Name Necklace" class="cart-item-img">
+                </div>
+                <div class="col-md-8">
+                  <div class="cart-item-details">
+                    <h3 class="cart-item-title">Personalized Name Necklace</h3>
+                    <p class="cart-item-desc">Engraved sterling silver</p>
+                    <p class="text-success small"><i class="fas fa-check-circle"></i> In Stock</p>
+                    <div class="cart-item-price">LKR 2,500</div>
+                    
+                    <div class="quantity-control">
+                      <button class="quantity-btn decrease">-</button>
+                      <input type="number" class="quantity-input" value="1" min="1" max="10">
+                      <button class="quantity-btn increase">+</button>
+                      <button class="remove-item ms-auto"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="cart-item">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="images/gourmet-basket.webp" alt="Gourmet Gift Basket" class="cart-item-img">
+                </div>
+                <div class="col-md-8">
+                  <div class="cart-item-details">
+                    <h3 class="cart-item-title">Gourmet Gift Basket</h3>
+                    <p class="cart-item-desc">Premium treats collection</p>
+                    <p class="text-success small"><i class="fas fa-check-circle"></i> In Stock</p>
+                    <div class="cart-item-price">LKR 7,000</div>
+                    
+                    <div class="quantity-control">
+                      <button class="quantity-btn decrease">-</button>
+                      <input type="number" class="quantity-input" value="1" min="1" max="5">
+                      <button class="quantity-btn increase">+</button>
+                      <button class="remove-item ms-auto"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Empty Cart State (hidden by default) -->
+          <div id="empty-cart" class="empty-cart" style="display: none;">
+            <div class="empty-cart-icon">
+              <i class="fas fa-gift"></i>
+            </div>
+            <h3>Your cart is empty</h3>
+            <p>Looks like you haven't added any gifts yet</p>
+            <a href="shop.html" class="btn btn-primary mt-3">Browse Gifts</a>
+          </div>
+          
+          <!-- Gift Message -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-envelope me-2"></i> Add a Gift Message</h5>
+              <textarea class="form-control mt-3" rows="3" placeholder="Write a personalized message to be included with your gifts..."></textarea>
+              <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" id="gift-wrapping">
+                <label class="form-check-label" for="gift-wrapping">
+                  Add Premium Gift Wrapping (+LKR 500)
+                </label>
+              </div>
+              <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" id="gift-wrapping">
+                <label class="form-check-label" for="gift-wrapping">
+                  Handwritten message card (+LKR 500)
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Continue Shopping Button -->
+          <div class="d-flex justify-content-between mb-5">
+            <a href="shop.html" class="btn btn-outline-primary">
+              <i class="fas fa-arrow-left me-2"></i> Continue Shopping
+            </a>
+            <button class="btn btn-outline-secondary" id="update-cart">
+              <i class="fas fa-sync-alt me-2"></i> Update Cart
+            </button>
+          </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+          <div class="cart-summary">
+            <h3 class="summary-title">Order Summary</h3>
+            
+            <div class="summary-row">
+              <span>Subtotal (2 items)</span>
+              <span>RS.9500.00</span>
+            </div>
+            
+            <div class="summary-row" id="wrapping-row" style="display: none;">
+              <span>Gift Wrapping</span>
+              <span>RS.500.00</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span class="text-success">FREE</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Tax</span>
+              <span>RS.300.00</span>
+            </div>
+            
+            <div class="summary-row summary-total">
+              <span>Total</span>
+              <span id="grand-total">RS.9800.00</span>
+            </div>
+            
+            <button class="checkout-btn" onclick="window.location='checkout.html'">
+              Proceed to Checkout
+            </button>
+            
+            <a href="gift-ideas.html" class="continue-shopping">
+              or get more gift ideas
+            </a>
+            
+            <div class="coupon-input mt-4">
+              <input type="text" placeholder="Coupon code">
+              <button type="button">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  <!-- Start Footer -->
+  <footer class="footer-section py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <ul class="list-unstyled d-flex justify-content-center mb-2">
+            <li class="me-4"><a href="#" >Terms &amp; Conditions</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+          <p class="mb-0">Copyright &copy;<script>document.write(new Date().getFullYear());</script> GiftJoy. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/tiny-slider.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Quantity adjustment
+      document.querySelectorAll('.increase').forEach(button => {
+        button.addEventListener('click', function() {
+          const input = this.parentElement.querySelector('.quantity-input');
+          const max = parseInt(input.getAttribute('max')) || 99;
+          if (parseInt(input.value) < max) {
+            input.value = parseInt(input.value) + 1;
+            updateCartTotals();
+          }
+        });
+      });
+
+      document.querySelectorAll('.decrease').forEach(button => {
+        button.addEventListener('click', function() {
+          const input = this.parentElement.querySelector('.quantity-input');
+          const min = parseInt(input.getAttribute('min')) || 1;
+          if (parseInt(input.value) > min) {
+            input.value = parseInt(input.value) - 1;
+            updateCartTotals();
+          }
+        });
+      });
+
+      // Manual quantity input
+      document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', function() {
+          const min = parseInt(this.getAttribute('min')) || 1;
+          const max = parseInt(this.getAttribute('max')) || 99;
+          let value = parseInt(this.value);
+          
+          if (isNaN(value) || value < min) value = min;
+          if (value > max) value = max;
+          
+          this.value = value;
+          updateCartTotals();
+        });
+      });
+
+      // Remove item
+      document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (confirm('Are you sure you want to remove this item from your cart?')) {
+            const item = this.closest('.cart-item');
+            item.remove();
+            updateCartCount();
+            checkEmptyCart();
+            updateCartTotals();
+          }
+        });
+      });
+
+      // Gift wrapping toggle
+      document.getElementById('gift-wrapping').addEventListener('change', function() {
+        const wrappingRow = document.getElementById('wrapping-row');
+        if (this.checked) {
+          wrappingRow.style.display = 'flex';
+        } else {
+          wrappingRow.style.display = 'none';
+        }
+        updateCartTotals();
+      });
+
+      // Update cart button
+      document.getElementById('update-cart').addEventListener('click', function() {
+        alert('Cart updated successfully!');
+      });
+
+      // Initial calculations
+      updateCartTotals();
+      
+      function updateCartTotals() {
+      let subtotal = 0;
+      document.querySelectorAll('.cart-item').forEach(item => {
+          const price = parseFloat(item.querySelector('.cart-item-price').textContent.replace('Rs.', '').replace(',', '').trim());
+          const quantity = parseInt(item.querySelector('.quantity-input').value);
+          subtotal += price * quantity;
+      });
+
+    const giftWrapping = document.getElementById('gift-wrapping').checked;
+    const grandTotal = subtotal + tax + (giftWrapping ? 500 : 0);
+    
+    // Format with LKR currency symbol and proper formatting
+    document.getElementById('grand-total').textContent = 'Rs.' + grandTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+      function updateCartCount() {
+        const count = document.querySelectorAll('.cart-item').length;
+        document.querySelector('.cart-count').textContent = count;
+      }
+
+      function checkEmptyCart() {
+        if (document.querySelectorAll('.cart-item').length === 0) {
+          document.getElementById('cart-items-container').style.display = 'none';
+          document.getElementById('empty-cart').style.display = 'block';
+        } else {
+          document.getElementById('cart-items-container').style.display = 'block';
+          document.getElementById('empty-cart').style.display = 'none';
+        }
+      }
+    });
+  </script>
+  <script src="js/custom.js"></script>
+</body>
+</html>

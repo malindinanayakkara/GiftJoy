@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="GiftJoy">
+  <link rel="shortcut icon" href="favicon.png">
+
+  <meta name="description" content="Checkout - Complete your gift purchase with GiftJoy" />
+  <meta name="keywords" content="gifts, checkout, purchase, payment" />
+
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="css/tiny-slider.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <title>GiftJoy</title>
+  
+  <style>
+    /* Checkout Page Styles */
+    .checkout-page {
+      background-color: #f9f5f0;
+      min-height: 100vh;
+    }
+    
+    .checkout-header {
+      background-color: #a92138;
+      color: white;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+    
+    .checkout-header h1 {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .checkout-header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+    
+    .checkout-progress {
+      margin-bottom: 3rem;
+    }
+    
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+    
+    .progress-steps:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #ddd;
+      z-index: 1;
+    }
+    
+    .progress-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ddd;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      font-weight: 600;
+    }
+    
+    .step-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .progress-step.active .step-number {
+      background: #a92138;
+      color: white;
+    }
+    
+    .progress-step.active .step-label {
+      color: #a92138;
+      font-weight: 500;
+    }
+    
+    .checkout-form-section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2a2a2a;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .form-label {
+      font-weight: 500;
+      color: #2a2a2a;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      border-color: #a92138;
+      box-shadow: 0 0 0 0.2rem rgba(169, 33, 56, 0.15);
+    }
+    
+    .required-field:after {
+      content: '*';
+      color: #dc3545;
+      margin-left: 3px;
+    }
+    
+    .different-address-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+    
+    .different-address-toggle input {
+      margin-right: 0.75rem;
+    }
+    
+    .order-summary {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 2rem;
+      position: sticky;
+      top: 1rem;
+    }
+    
+    .order-item {
+      display: flex;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .order-item-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 1rem;
+    }
+    
+    .order-item-details {
+      flex: 1;
+    }
+    
+    .order-item-name {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    
+    .order-item-price {
+      color: #a92138;
+      font-weight: 600;
+    }
+    
+    .order-totals {
+      margin-top: 1.5rem;
+    }
+    
+    .order-total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    
+    .order-total {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #a92138;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .payment-method {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .payment-method:hover {
+      border-color: #a92138;
+    }
+    
+    .payment-method.active {
+      border-color: #a92138;
+      background-color: rgba(169, 33, 56, 0.05);
+    }
+    
+    .payment-method-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .payment-method-header input {
+      margin-right: 0.75rem;
+    }
+    
+    .payment-method-header label {
+      font-weight: 500;
+      margin-bottom: 0;
+      cursor: pointer;
+    }
+    
+    .payment-method-icon {
+      margin-left: auto;
+      font-size: 1.5rem;
+      color: #666;
+    }
+    
+    .payment-form {
+      margin-top: 1rem;
+      display: none;
+    }
+    
+    .payment-method.active .payment-form {
+      display: block;
+    }
+    
+    .card-element {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .checkout-btn {
+      background: #a92138;
+      color: white;
+      border: none;
+      padding: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      width: 100%;
+      margin-top: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .checkout-btn:hover {
+      background: #8a1c2f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(169, 33, 56, 0.2);
+    }
+    
+    .secure-checkout {
+      text-align: center;
+      margin-top: 1rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .secure-checkout i {
+      color: #28a745;
+      margin-right: 0.5rem;
+    }
+    
+    .processing-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.9);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #a92138;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 767.98px) {
+      .progress-steps {
+        flex-wrap: wrap;
+      }
+      
+      .progress-step {
+        width: 50%;
+        margin-bottom: 1rem;
+      }
+      
+      .checkout-header {
+        padding: 2rem 0;
+      }
+      
+      .checkout-header h1 {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body class="checkout-page">
+  <!-- Start Header/Navigation -->
+  <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="GiftJoy navigation bar">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/hero1.png" alt="GiftJoy Logo" class="navbar-logo me-2">
+        
+      </a>
+      <span class="brand-name">GiftJoy</span>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsGiftJoy" aria-controls="navbarsGiftJoy" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarsGiftJoy">
+        <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+        <li>
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li><a class="nav-link" href="shop.html">Shop</a></li>
+        <li><a class="nav-link" href="occasions.html">Occasions</a></li>
+        <li><a class="nav-link" href="gift-ideas.html">Gift Ideas</a></li>
+        <li><a class="nav-link" href="about.html">About us</a></li>
+        <li><a class="nav-link" href="contact.html">Contact us</a></li>
+        </ul>
+      
+        <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+        <li><a class="nav-link" href="login.html"><img src="images/user.svg" alt="Account"></a></li>
+        <li class="nav-item active"><a class="nav-link" href="cart.html"><img src="images/cart.svg" alt="Cart"></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End Header/Navigation -->
+
+  <!-- Checkout Header -->
+  <div class="checkout-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1>Checkout</h1>
+          <p>Complete your gift purchase with GiftJoy</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Customer Information -->
+        <div class="checkout-form-section">
+          <h2 class="section-title">Customer Information</h2>
+          
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <label for="email" class="form-label required-field">Email address</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="col-md-6">
+              <label for="phone" class="form-label required-field">Phone number</label>
+              <input type="tel" class="form-control" id="phone" required>
+            </div>
+          </div>
+          
+        </div>
+        
+        <!-- Shipping Address -->
+        <div class="checkout-form-section">
+          <h2 class="section-title">Shipping Address</h2>
+          
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <label for="first-name" class="form-label required-field">First name</label>
+              <input type="text" class="form-control" id="first-name" required>
+            </div>
+            <div class="col-md-6">
+              <label for="last-name" class="form-label required-field">Last name</label>
+              <input type="text" class="form-control" id="last-name" required>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="address" class="form-label required-field">Address</label>
+            <input type="text" class="form-control" id="address" placeholder="Street address" required>
+          </div>
+          
+          <div class="mb-3">
+            <input type="text" class="form-control" id="address2" placeholder="Apartment, suite, etc. (optional)">
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-4 mb-3 mb-md-0">
+              <label for="country" class="form-label required-field">Country</label>
+              <select class="form-control" id="country" required>
+                <option value="">Select country</option>
+                <option value="US">Sri Lanka</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+              <label for="city" class="form-label required-field">City</label>
+              <input type="text" class="form-control" id="city" required>
+            </div>
+            <div class="col-md-4">
+              <label for="zip" class="form-label required-field">ZIP/Postal code</label>
+              <input type="text" class="form-control" id="zip" required>
+            </div>
+          </div>
+          
+          <div class="different-address-toggle">
+            <input type="checkbox" id="different-billing">
+            <label for="different-billing">Use a different billing address</label>
+          </div>
+          
+          <div id="billing-address" style="display: none;">
+            <h3 class="h5 mb-3">Billing Address</h3>
+            
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label for="billing-first-name" class="form-label required-field">First name</label>
+                <input type="text" class="form-control" id="billing-first-name">
+              </div>
+              <div class="col-md-6">
+                <label for="billing-last-name" class="form-label required-field">Last name</label>
+                <input type="text" class="form-control" id="billing-last-name">
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="billing-address" class="form-label required-field">Address</label>
+              <input type="text" class="form-control" id="billing-address" placeholder="Street address">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Shipping Method -->
+        <div class="checkout-form-section">
+          <h2 class="section-title">Shipping Method</h2>
+          
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="radio" name="shipping-method" id="standard-shipping" checked>
+            <label class="form-check-label" for="standard-shipping">
+              Standard Shipping (3-5 business days) - FREE
+            </label>
+          </div>
+          
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="radio" name="shipping-method" id="express-shipping">
+            <label class="form-check-label" for="express-shipping">
+              Express Shipping (1-2 business days) - LKR 750
+            </label>
+          </div>
+          
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="shipping-method" id="gift-wrapping">
+            <label class="form-check-label" for="gift-wrapping">
+              Add Premium Gift Wrapping - LKR 500
+            </label>
+          </div>
+        </div>
+        
+        <!-- Gift Message -->
+        <div class="checkout-form-section">
+          <h2 class="section-title">Gift Message</h2>
+          
+          <div class="mb-3">
+            <textarea class="form-control" id="gift-message" rows="3" placeholder="Write a personalized message to be included with your gifts..."></textarea>
+          </div>
+          
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="include-receipt">
+            <label class="form-check-label" for="include-receipt">
+              Include a printed receipt (for gift recipients)
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Order Summary -->
+      <div class="col-lg-4">
+        <div class="order-summary">
+          <h2 class="section-title">Order Summary</h2>
+          
+          <div class="order-item">
+            <img src="images/personalized-necklace.jpg" alt="Personalized Name Necklace" class="order-item-img">
+            <div class="order-item-details">
+              <div class="order-item-name">Personalized Name Necklace</div>
+              <div class="text-muted small">Qty: 1</div>
+              <div class="order-item-price">LKR 2,500</div>
+            </div>
+          </div>
+          
+          <div class="order-item">
+            <img src="images/gourmet-basket.webp" alt="Gourmet Gift Basket" class="order-item-img">
+            <div class="order-item-details">
+              <div class="order-item-name">Gourmet Gift Basket</div>
+              <div class="text-muted small">Qty: 1</div>
+              <div class="order-item-price">LKR 7,000</div>
+            </div>
+          </div>
+          
+          <div class="order-totals">
+            <div class="order-total-row">
+              <span>Subtotal</span>
+              <span>RS.9500.00</span>
+            </div>
+            <div class="order-total-row">
+              <span>Shipping</span>
+              <span class="text-success">FREE</span>
+            </div>
+            <div class="order-total-row">
+              <span>Tax</span>
+              <span>RS.300.00</span>
+            </div>
+            <div class="order-total-row order-total">
+              <span>Total</span>
+              <span>RS.9800.00</span>
+            </div>
+          </div>
+          
+          <!-- Payment Methods -->
+          <h2 class="section-title mt-4">Payment Method</h2>
+          
+          <div class="payment-method active" id="credit-card-method">
+            <div class="payment-method-header">
+              <input type="radio" name="payment-method" id="credit-card" checked>
+              <label for="credit-card">Credit/Debit Card</label>
+              <div class="payment-method-icon">
+                <i class="far fa-credit-card"></i>
+              </div>
+            </div>
+            
+            <div class="payment-form">
+              <div class="mb-3">
+                <label for="card-number" class="form-label required-field">Card number</label>
+                <input type="text" class="form-control" id="card-number" placeholder="1234 5678 9012 3456" required>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-md-6 mb-3 mb-md-0">
+                  <label for="card-expiry" class="form-label required-field">Expiry date</label>
+                  <input type="text" class="form-control" id="card-expiry" placeholder="MM/YY" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="card-cvc" class="form-label required-field">CVC</label>
+                  <input type="text" class="form-control" id="card-cvc" placeholder="123" required>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="card-name" class="form-label required-field">Name on card</label>
+                <input type="text" class="form-control" id="card-name" placeholder="John Smith" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="payment-method" id="paypal-method">
+            <div class="payment-method-header">
+              <input type="radio" name="payment-method" id="paypal">
+              <label for="paypal">PayPal</label>
+              <div class="payment-method-icon">
+                <i class="fab fa-paypal"></i>
+              </div>
+            </div>
+            
+            <div class="payment-form">
+              <p class="mb-0">You'll be redirected to PayPal to complete your payment securely.</p>
+            </div>
+          </div>
+          
+          <button class="checkout-btn" onclick="completeOrder()" id="place-order">Complete Order</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Processing Overlay -->
+  <div class="processing-overlay" id="processingOverlay">
+    <div class="spinner"></div>
+    <h3>Processing your order...</h3>
+    <p>Please wait while we complete your purchase</p>
+  </div>
+
+      
+  <!-- Start Footer -->
+  <footer class="footer-section py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <ul class="list-unstyled d-flex justify-content-center mb-2">
+            <li class="me-4"><a href="#" >Terms &amp; Conditions</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+          <p class="mb-0">Copyright &copy;<script>document.write(new Date().getFullYear());</script> GiftJoy. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/tiny-slider.js"></script>
+  <script>      
+      function selectPayment(method) {
+      document.querySelectorAll('.payment-method').forEach(el => {
+        el.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      document.getElementById(method + 'Payment').checked = true;
+    }
+    
+    function completeOrder() {
+      // Show processing overlay
+      document.getElementById('processingOverlay').style.display = 'flex';
+      
+      // Simulate payment processing delay
+      setTimeout(() => {
+        // Redirect to thank you page
+        window.location.href = 'thankyou.html';
+      }, 2000);      
+      };
+  </script>
+  <script src="js/custom.js"></script>
+</body>
+</html>
